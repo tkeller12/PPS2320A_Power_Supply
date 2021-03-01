@@ -1,11 +1,20 @@
 import serial
+from serial.tools import list_ports
 import time
 
 class pps(object):
 
-    def __init__(self, port):
+    def __init__(self, port = None):
+
+        # Automatically detect serial port
+        if port == None:
+            comports = list_ports.comports()
+            for comport in comports:
+                if "Silicon Labs CP210x USB to UART Bridge" in comport.description:
+                    port = comport.device
 
         self.ser = serial.Serial(port, baudrate = 9600, timeout = 0.1)
+    
 
     def send_command(self, command, bytes_to_read = 3):
         '''

@@ -8,12 +8,19 @@ class pps(object):
 
         # Automatically detect serial port
         if port == None:
+            print('Automatically Detecting Port...')
             comports = list_ports.comports()
             for comport in comports:
+                print(comport)
                 if "Silicon Labs CP210x USB to UART Bridge" in comport.description:
                     port = comport.device
 
+        print('here')
+        print('Initializing Serial Port')
+        if port == None:
+            print('Could not identify com Port')
         self.ser = serial.Serial(port, baudrate = 9600, timeout = 0.1)
+        print('Done.')
     
 
     def send_command(self, command, bytes_to_read = 3):
